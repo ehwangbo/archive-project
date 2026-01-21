@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+        }
+        
+        .section {
+            padding: 60px 40px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section:nth-child(odd) {
+            background: #fafafa;
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            max-width: 800px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #B4A5C8;
+            margin-bottom: 30px;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 100px 40px;
+            background: linear-gradient(135deg, #B4A5C8, #8B9D83);
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 64px;
+            color: white;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: #B4A5C8;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        ul {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        li {
+            padding: 10px 0;
+            padding-left: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        li:before {
+            content: "→";
+            margin-right: 10px;
+            color: #B4A5C8;
+            font-weight: bold;
+        }
+        
+        .quote {
+            font-size: 22px;
+            font-style: italic;
+            padding: 30px;
+            background: #f5f5f5;
+            border-left: 4px solid #B4A5C8;
+            margin: 30px 0;
+        }
+        
+        .quote-author {
+            font-size: 14px;
+            font-style: normal;
+            color: #999;
+            margin-top: 10px;
+        }
+        
+        .colors {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .color {
+            flex: 1;
+            height: 100px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        strong {
+            color: #B4A5C8;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>ALO MOVEMENT</h1>
+    <p class="subtitle">Redefining mobility for women who move the world</p>
+    <p style="margin-top: 30px; font-style: italic;">"Every stage. Every step. Every story."</p>
+</div>
+
+<!-- OPPORTUNITY -->
+<div class="section">
+    <h2>The Opportunity</h2>
+    <p>6 million women in the US use mobility aids. Yet the market remains stuck in clinical design from the 1950s.</p>
+    
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number">19-29%</div>
+            <div class="stat-label">More women use mobility aids than men</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">20%</div>
+            <div class="stat-label">Less likely to adopt due to stigma</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">90%</div>
+            <div class="stat-label">Of women have weaker grip than 95% of men</div>
+        </div>
+    </div>
+    
+    <p style="font-size: 18px; color: #B4A5C8; margin-top: 30px;"><strong>Alo built a brand on empowering women through movement. This is the next frontier.</strong></p>
+</div>
+
+<!-- WHY ALO -->
+<div class="section">
+    <h2>Why Alo Yoga?</h2>
+    <div class="grid">
+        <div>
+            <h3>Brand Alignment</h3>
+            <ul>
+                <li>Mission: "Spreading mindful movement"</li>
+                <li>Wellness-conscious women 25-55</li>
+                <li>Premium positioning ($80-200 products)</li>
+                <li>Sustainability commitments</li>
+                <li>Community-first approach</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Natural Extension</h3>
+            <ul>
+                <li>Yoga mats → mobility support</li>
+                <li>Recovery tools → assistive devices</li>
+                <li>Aging customer base (millennials 30-40s)</li>
+                <li>60% purchase for injury recovery</li>
+                <li>Mother/daughter gift market</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="section">
+    <h2>What Women Told Us</h2>
+    
+    <div class="quote">
+        "I want my cane to give me confidence. I want it to feel like me instead of a disability."
+        <div class="quote-author">— Survey Respondent</div>
+    </div>
+    
+    <div class="quote">
+        "My fingers and wrists get tired after five minutes of using normal cane grips."
+        <div class="quote-author">— Wingate Resident</div>
+    </div>
+    
+    <div class="quote">
+        "I'm a woman in my late 20s and really struggling to find a fashionable cane."
+        <div class="quote-author">— Reddit User</div>
+    </div>
+</div>
+
+<!-- SOLUTION -->
+<div class="section">
+    <h2>Designed for Her Body</h2>
+    <p>Every detail informed by biomechanics research and user testing with 30+ women.</p>
+    
+    <div class="grid">
+        <div>
+            <h3>Ergonomic Innovation</h3>
+            <ul>
+                <li>Closed-loop handle for multiple grip options</li>
+                <li>Deep contours guide proper posture</li>
+                <li>Neutral wrist angle (40% strain reduction)</li>
+                <li>Smaller diameter for female hands</li>
+                <li>Pressure distributed across fingers</li>
+                <li>Four-pronged tip for stability</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Validated by Experts</h3>
+            <p><strong>Dr. Ted Morse:</strong> "Light weight is crucial—consider density and shaft diameter"</p>
+            <p><strong>Dr. Resnik + ERC Students:</strong> "Prioritize wrist angles for arthritis patients"</p>
+            <p><strong>User Testing:</strong> 95% preferred ergonomic grooves</p>
+        </div>
+    </div>
+</div>
+
+<!-- ENGINEERING -->
+<div class="section">
+    <h2>Engineering Excellence</h2>
+    
+    <div class="grid">
+        <div>
+            <h3>Materials Science</h3>
+            <p><strong>PLA Shaft</strong><br>
+            50-70 MPa tensile strength<br>
+            Renewable corn sources<br>
+            Industrial compostability</p>
+            
+            <p><strong>TPU Grip Covers</strong><br>
+            300% elongation flexibility<br>
+            Durable, soft, machine washable<br>
+            Custom groove patterns</p>
+        </div>
+        <div>
+            <h3>Structural Validation</h3>
+            <p>FEA load-bearing analysis shows <strong>30% better stress distribution</strong> than standard grips</p>
+            
+            <p><strong>Grid-locking mechanism</strong> eliminates adhesives while allowing tool-free disassembly</p>
+            
+            <p>Tested to support <strong>200+ lbs pulling force</strong> for sit-to-stand assistance</p>
+        </div>
+    </div>
+</div>
+
+<!-- SUSTAINABILITY -->
+<div class="section">
+    <h2>Designed for the Planet</h2>
+    
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number">2.78 kg</div>
+            <div class="stat-label">CO₂-Eq per cane<br>70% lower than traditional</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">0.212 m³</div>
+            <div class="stat-label">Water use<br>Comparable to 3 yoga mats</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">10+ years</div>
+            <div class="stat-label">Modular design lifespan<br>vs. 2-3 years standard</div>
+        </div>
+    </div>
+    
+    <p style="text-align: center; margin-top: 30px; font-size: 18px; color: #B4A5C8;">Additive manufacturing enables localized production, reducing shipping emissions</p>
+</div>
+
+<!-- PRODUCT LINE -->
+<div class="section">
+    <h2>Alo Movement Product Line</h2>
+    
+    <div class="colors">
+        <div class="color" style="background: #FFFFFF; color: #333; border: 1px solid #ddd;">Cloud - $195</div>
+        <div class="color" style="background: #3A3A3A;">Anthracite - $195</div>
+        <div class="color" style="background: #B4A5C8;">Lavender Haze - $195</div>
+        <div class="color" style="background: #8B9D83;">Sage - $195</div>
+    </div>
+    
+    <div class="grid">
+        <div>
+            <h3>Customization Options</h3>
+            <p><strong>Removable TPU Grip Covers</strong> ($35)<br>
+            8 seasonal colorways, artist collaborations</p>
+            
+            <p><strong>Shaft Sleeves</strong> ($45)<br>
+            Patterns matching Alo legging designs</p>
+        </div>
+        <div>
+            <h3>Complete Kits</h3>
+            <p><strong>Customization Kit</strong> — $245<br>
+            Base cane + 3 grip covers + sleeve + case</p>
+            
+            <p><strong>Studio Edition</strong> — $275<br>
+            Exclusive colors + engraving + nonprofit donation</p>
+        </div>
+    </div>
+</div>
+
+<!-- USER JOURNEY -->
+<div class="section">
+    <h2>The Experience</h2>
+    
+    <div style="padding-left: 30px; border-left: 3px solid #B4A5C8;">
+        <div style="margin-bottom: 30px;">
+            <h3>Awareness</h3>
+            <p>Instagram campaign features real Alo community members sharing recovery stories</p>
+        </div>
+        <div style="margin-bottom: 30px;">
+            <h3>Consideration</h3>
+            <p>Interactive "Find Your Grip" tool + biomechanics education content</p>
+        </div>
+        <div style="margin-bottom: 30px;">
+            <h3>Purchase</h3>
+            <p>Customization flow: choose colors, add accessories, gift messaging</p>
+        </div>
+        <div style="margin-bottom: 30px;">
+            <h3>Unboxing</h3>
+            <p>Premium packaging with fit guide, welcome video QR code, reusable storage</p>
+        </div>
+        <div style="margin-bottom: 30px;">
+            <h3>Daily Use</h3>
+            <p>Ergonomics deliver comfort. Aesthetic delivers confidence.</p>
+        </div>
+        <div>
+            <h3>Community</h3>
+            <p>Movement Circles at Alo studios, seasonal grip drops, repair program</p>
+        </div>
+    </div>
+</div>
+
+<!-- MARKETING -->
+<div class="section">
+    <h2>Marketing Strategy</h2>
+    
+    <div class="grid">
+        <div>
+            <h3>Phase 1: Launch</h3>
+            <p><strong>"Movement Has No Limits"</strong></p>
+            <ul>
+                <li>Founder statement on accessibility</li>
+                <li>UGC campaign #MovementForEveryStage</li>
+                <li>Adaptive athlete partnerships</li>
+                <li>In-store launch events</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Phase 2: Education</h3>
+            <p><strong>"Designed for Her Body"</strong></p>
+            <ul>
+                <li>Biomechanics content series</li>
+                <li>User testimonial videos</li>
+                <li>Sustainability transparency</li>
+                <li>PT community partnerships</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <h3>Phase 3: Community</h3>
+        <p><strong>"We Move Together"</strong></p>
+        <p>Monthly adaptive yoga classes, artist collaboration grip drops, ambassador program with diverse users</p>
+    </div>
+</div>
+
+<!-- IMPACT -->
+<div class="section">
+    <h2>Projected Impact</h2>
+    
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number">$8B</div>
+            <div class="stat-label">Annual mobility aid market</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">6M</div>
+            <div class="stat-label">Women using canes in US</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">$0</div>
+            <div class="stat-label">Design innovation investment (currently)</div>
+        </div>
+    </div>
+    
+    <div class="grid" style="margin-top: 40px;">
+        <div>
+            <h3>Business Value</h3>
+            <ul>
+                <li>New revenue stream targeting aging demographic</li>
+                <li>Differentiation through accessibility leadership</li>
+                <li>Press coverage in design + wellness media</li>
+                <li>Lifetime customer value extension</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Social Impact</h3>
+            <ul>
+                <li>Reduces stigma around mobility aids</li>
+                <li>Empowers women to seek support sooner</li>
+                <li>Sets new industry standards</li>
+                <li>Creates inclusive community spaces</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- CLOSING -->
+<div class="hero">
+    <h2 style="color: white; margin-bottom: 30px;">This is more than a product.</h2>
+    <p style="max-width: 800px; margin: 0 auto; font-size: 20px;">It's a statement that mobility aids deserve the same design innovation, research rigor, and brand love that we give to yoga mats and running shoes.</p>
+    
+    <div style="margin-top: 60px;">
+        <p>Project by Evy Hwangbo</p>
+        <p style="font-size: 14px; margin-top: 10px; opacity: 0.8;">Industrial Design • ENGN620 • 2025</p>
+    </div>
+</div>
+
+</body>
+</html>
