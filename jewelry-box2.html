@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jewelry box 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .title {
+            position: fixed;
+            top: 1.5vh;
+            left: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: left;
+            z-index: 100;
+            color: #fff;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .title:hover {
+            font-weight: 600;
+        }
+
+        .manual {
+            position: fixed;
+            top: 1.5vh;
+            right: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: right;
+            z-index: 100;
+            color: #fff;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .manual.active {
+            color: rgb(0, 0, 0);
+            font-weight: 600;
+        }
+
+        .manual-panel {
+            position: fixed;
+            top: 0;
+            right: -30vw;
+            width: 30vw;
+            height: 100vh;
+            background-color: #fff;
+            color: #000;
+            z-index: 99;
+            transition: right 0.4s ease;
+            padding: 5vh 3vw;
+            overflow-y: auto;
+            pointer-events: none;
+        }
+
+        .manual-panel.active {
+            right: 0;
+            pointer-events: auto;
+        }
+
+        .manual-content {
+            font-size: clamp(9px, 0.98vw, 13px);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .manual-content p {
+            margin-bottom: 2vh;
+        }
+
+        /* Photo container */
+        .photos-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo {
+            position: absolute;
+            width: 400px;
+            height: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            will-change: transform;
+        }
+
+        .photo img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transform: scale(1.05);
+        }
+
+        .photo.zoomed {
+            transform: scale(1.5) !important;
+        }
+
+        /* Scroll hint !! " scroll to explore*/
+        .scroll-hint {
+            position: fixed;
+            bottom: 19vh;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            color: #666;
+            z-index: 200;
+            text-align: center;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInHint 2s ease 1s forwards, pulseHint 2s ease-in-out 3s infinite;
+            pointer-events: none;
+        }
+
+        .scroll-hint.hidden {
+            animation: fadeOutHint 0.5s ease forwards;
+        }
+
+        @keyframes fadeInHint {
+            from { opacity: 0; }
+            to { opacity: 0.7; }
+        }
+
+        @keyframes fadeOutHint {
+            from { opacity: 0.7; }
+            to { opacity: 0; }
+        }
+
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Subtitle text */
+        .subtitle {
+            position: fixed;
+            bottom: 5vh;
+            left: 5vw;
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            color: #666;
+            max-width: 200px;
+            line-height: 1.6;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            transition: opacity 0.2s;
+            z-index: 150;
+        }
+
+        .subtitle:hover {
+            opacity: 0.8;
+        }
+
+        .description-text {
+            position: fixed;
+            bottom: 14vh;
+            left: 5vw;
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            color: #fff;
+            max-width: 250px;
+            line-height: 1.8;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 150;
+        }
+
+        .description-text.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="title" onclick="goHome()">grandma's box<br />할머니의 상자</div>
+    <div class="manual" onclick="toggleManual()">manual<br />설명서</div>
+
+    <div class="manual-panel" id="manualPanel">
+        <div class="manual-content">
+            <p>dear grandchild,<br />be gentle with these trinkets</p>
+            <p>there was war but there was beauty,<br />i'm sure of that.</p>
+            <p>it's been a long time since anyone has<br />seen these. i've lived a long life.</p>
+            <p>there is not much that i can say,<br />so much hardship, joy, erasure, rewriting.<br />i wanted to explain more to you but<br />the words wouldn't come.</p>
+            <p>it's hard, you know?<br />to be honest with you, my grandchild,<br />i must first be honest with myself.</p>
+            <p>sometimes it is easier to<br />show than to tell.</p>
+            <p>there's 4 items for you;<br />video capsule<br />video capsule<br />picture capsule<br />audio capsule</p>
+            <p>click whenever you are curious</p>
+        </div>
+    </div>
+
+    <div class="photos-container" id="photosContainer"></div>
+
+    <div class="scroll-hint" id="scrollHint">scroll to explore<br />스크롤하세요</div>
+
+    <div class="subtitle" onclick="toggleDescription()">grandma, what's this about?<br />할머니, 이건 뭐에요?</div>
+
+    <div class="description-text" id="descriptionText">
+        this, my dear grandchild, are moments from post war korea in the late 1940s to 1950s. aren't these scenes beautiful?
+    </div>
+
+    <script>
+        // Array of photo paths
+        const photos = [
+            'images/colored-photos/record-player-1.png',
+            'images/colored-photos/record-player-2.png',
+            'images/colored-photos/record-player-3.png',
+            'images/colored-photos/record-player-4.png',
+            'images/colored-photos/record-player-5.png',
+            'images/colored-photos/record-player-6.png',
+            'images/colored-photos/record-player-7.png',
+            'images/colored-photos/record-player-8.png',
+            'images/colored-photos/record-player-9.png',
+            'images/colored-photos/record-player-10.png',
+            'images/colored-photos/record-player-11.png',
+            'images/colored-photos/record-player-12.png',
+            'images/colored-photos/record-player-13.png',
+            'images/colored-photos/record-player-14.png',
+            'images/colored-photos/record-player-15.png'
+        ];
+
+        // Different transforms for each photo (rotation and translation)
+        const transforms = [
+            { rotate: -3, translateX: -15, translateY: -10 },
+            { rotate: 2, translateX: 10, translateY: 5 },
+            { rotate: -2, translateX: -8, translateY: 15 },
+            { rotate: 3, translateX: 12, translateY: -5 },
+            { rotate: -1, translateX: -5, translateY: 10 },
+            { rotate: 2.5, translateX: 8, translateY: -8 },
+            { rotate: -2.5, translateX: -10, translateY: 12 },
+            { rotate: 1.5, translateX: 6, translateY: -6 },
+            { rotate: -1.5, translateX: -12, translateY: 8 },
+            { rotate: 2, translateX: 9, translateY: -10 },
+            { rotate: -2.2, translateX: -7, translateY: 14 },
+            { rotate: 3, translateX: 11, translateY: -3 },
+            { rotate: -3, translateX: -9, translateY: 7 },
+            { rotate: 1.8, translateX: 7, translateY: -12 },
+            { rotate: -1.8, translateX: -11, translateY: 9 }
+        ];
+
+        // Store photo elements and their vertical offsets
+        let photoElements = [];
+        let photoOffsets = [];
+        let zoomedStates = [];
+
+        // Create photo elements
+        const container = document.getElementById('photosContainer');
+        photos.forEach((photoSrc, index) => {
+            const photoDiv = document.createElement('div');
+            photoDiv.className = 'photo';
+            const baseZIndex = photos.length - index;
+            photoDiv.style.zIndex = baseZIndex; // Higher z-index for photos on top
+            
+            const img = document.createElement('img');
+            img.src = photoSrc;
+            photoDiv.appendChild(img);
+            
+            // Add click handler to toggle zoom
+            photoDiv.addEventListener('click', (e) => {
+                e.stopPropagation();
+                zoomedStates[index] = !zoomedStates[index];
+                if (zoomedStates[index]) {
+                    photoDiv.classList.add('zoomed');
+                    // Bring to front but maintain relative ordering
+                    photoDiv.style.zIndex = baseZIndex + 100;
+                } else {
+                    photoDiv.classList.remove('zoomed');
+                    // Return to original z-index
+                    photoDiv.style.zIndex = baseZIndex;
+                }
+            });
+            
+            container.appendChild(photoDiv);
+            photoElements.push(photoDiv);
+            photoOffsets.push(0); // Initialize offset to 0
+            zoomedStates.push(false); // Initialize zoom state to false
+            
+            // Set initial transform
+            updatePhotoTransform(index, 0);
+        });
+
+        function updatePhotoTransform(index, offset) {
+            const transform = transforms[index];
+            const rotateZ = transform.rotate;
+            const translateX = transform.translateX;
+            const translateY = transform.translateY + offset;
+            
+            photoElements[index].style.transform = 
+                `translate3d(${translateX}px, ${translateY}px, 0) rotate(${rotateZ}deg)`;
+        }
+
+        // Handle wheel scroll
+        // threshold for when one photo clears another (approximate photo height + some buffer)
+        const clearanceThreshold = 500;
+        let hasScrolled = false;
+        let isScrolling = false;
+        
+        document.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            
+            if (isScrolling) return;
+            isScrolling = true;
+            
+            // Hide scroll hint on first scroll
+            if (!hasScrolled) {
+                hasScrolled = true;
+                document.getElementById('scrollHint').classList.add('hidden');
+            }
+            
+            // Update offsets based on scroll, but only for photos that should be moving
+            const scrollDelta = -e.deltaY * 0.8;
+            
+            requestAnimationFrame(() => {
+                // Start from the top photo (index 0 has highest z-index) and work through stack
+                for (let i = 0; i < photoElements.length; i++) {
+                    // Check if this photo should move
+                    let shouldMove = false;
+                    
+                    if (i === 0) {
+                        // Top photo (first in array, highest z-index) always moves
+                        shouldMove = true;
+                    } else {
+                        // This photo should only move if the photo above it (i-1) has cleared it
+                        const photoAboveOffset = photoOffsets[i - 1];
+                        if (Math.abs(photoAboveOffset) >= clearanceThreshold) {
+                            shouldMove = true;
+                        }
+                    }
+                    
+                    if (shouldMove) {
+                        photoOffsets[i] += scrollDelta;
+                        updatePhotoTransform(i, photoOffsets[i]);
+                    }
+                }
+                isScrolling = false;
+            });
+        }, { passive: false });
+
+        // Toggle manual panel
+        function toggleManual() {
+            const panel = document.getElementById('manualPanel');
+            const manualBtn = document.querySelector('.manual');
+            panel.classList.toggle('active');
+            manualBtn.classList.toggle('active');
+        }
+
+        // Go home
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Toggle description text
+        function toggleDescription() {
+            const descriptionText = document.getElementById('descriptionText');
+            descriptionText.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

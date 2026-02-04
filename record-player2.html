@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>record player 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .title {
+            position: fixed;
+            top: 1.5vh;
+            left: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: left;
+            z-index: 100;
+            color: #fff;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .title:hover {
+            font-weight: 600;
+        }
+
+        .manual {
+            position: fixed;
+            top: 1.5vh;
+            right: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: right;
+            z-index: 100;
+            color: #fff;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .manual.active {
+            color: rgb(0, 0, 0);
+            font-weight: 600;
+        }
+
+        .manual-panel {
+            position: fixed;
+            top: 0;
+            right: -30vw;
+            width: 30vw;
+            height: 100vh;
+            background-color: #fff;
+            color: #000;
+            z-index: 99;
+            transition: right 0.4s ease;
+            padding: 5vh 3vw;
+            overflow-y: auto;
+            pointer-events: none;
+        }
+
+        .manual-panel.active {
+            right: 0;
+            pointer-events: auto;
+        }
+
+        .manual-content {
+            font-size: clamp(9px, 0.98vw, 13px);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .manual-content p {
+            margin-bottom: 2vh;
+        }
+
+        /* Canvas for circles */
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Click instruction */
+        .click-instruction {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(12px, 1.2vw, 16px);
+            font-weight: 300;
+            color: #666;
+            z-index: 50;
+            text-align: center;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInPulse 2s ease 1s forwards, pulseInstruction 2s ease-in-out 3s infinite;
+            pointer-events: none;
+        }
+
+        .click-instruction.hidden {
+            animation: fadeOutInstruction 0.5s ease forwards;
+        }
+
+        @keyframes fadeInPulse {
+            from { opacity: 0; }
+            to { opacity: 0.7; }
+        }
+
+        @keyframes fadeOutInstruction {
+            from { opacity: 0.7; }
+            to { opacity: 0; }
+        }
+
+        @keyframes pulseInstruction {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Audio text display */
+        .audio-text {
+            position: fixed;
+            bottom: 10vh;
+            left: 5vw;
+            font-size: clamp(11px, 1vw, 14px);
+            font-weight: 300;
+            color: #fff;
+            max-width: 400px;
+            line-height: 1.8;
+            z-index: 50;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .audio-text.visible {
+            opacity: 0.9;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="title" onclick="goHome()">grandma's box<br />할머니의 상자</div>
+    <div class="manual" onclick="toggleManual()">manual<br />설명서</div>
+
+    <div class="manual-panel" id="manualPanel">
+        <div class="manual-content">
+            <p>dear grandchild,<br />be gentle with these trinkets</p>
+            <p>there was war but there was beauty,<br />i'm sure of that.</p>
+            <p>it's been a long time since anyone has<br />seen these. i've lived a long life.</p>
+            <p>there is not much that i can say,<br />so much hardship, joy, erasure, rewriting.<br />i wanted to explain more to you but<br />the words wouldn't come.</p>
+            <p>it's hard, you know?<br />to be honest with you, my grandchild,<br />i must first be honest with myself.</p>
+            <p>sometimes it is easier to<br />show than to tell.</p>
+            <p>there's 4 items for you;<br />video capsule<br />video capsule<br />picture capsule<br />audio capsule</p>
+            <p>click whenever you are curious</p>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+    
+    <div class="click-instruction" id="clickInstruction">click anywhere to begin<br />클릭하세요</div>
+    
+    <div class="audio-text" id="audioText"></div>
+
+    <audio id="clickSound" preload="auto">
+        <source src="audio/click.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Audio files for circles (placeholders for now) -->
+    <audio id="audio1" preload="auto"><source src="audio/record-player-1.mp3" type="audio/mpeg"></audio>
+    <audio id="audio2" preload="auto"><source src="audio/record-player-2.mp3" type="audio/mpeg"></audio>
+    <audio id="audio3" preload="auto"><source src="audio/record-player-3.mp3" type="audio/mpeg"></audio>
+    <audio id="audio4" preload="auto"><source src="audio/record-player-4.mp3" type="audio/mpeg"></audio>
+    <audio id="audio5" preload="auto"><source src="audio/record-player-5.mp3" type="audio/mpeg"></audio>
+    <audio id="audio6" preload="auto"><source src="audio/record-player-6.mp3" type="audio/mpeg"></audio>
+    <audio id="audio7" preload="auto"><source src="audio/record-player-7.mp3" type="audio/mpeg"></audio>
+    <audio id="audio8" preload="auto"><source src="audio/record-player-8.mp3" type="audio/mpeg"></audio>
+    <audio id="audio9" preload="auto"><source src="audio/record-player-9.mp3" type="audio/mpeg"></audio>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Array to store circles
+        let circles = [];
+        let hasClicked = false;
+        let audioIndex = 0;
+        let currentAudio = null;
+        
+        // Audio elements
+        const audioElements = [
+            document.getElementById('audio1'),
+            document.getElementById('audio2'),
+            document.getElementById('audio3'),
+            document.getElementById('audio4'),
+            document.getElementById('audio5'),
+            document.getElementById('audio6'),
+            document.getElementById('audio7'),
+            document.getElementById('audio8'),
+            document.getElementById('audio9')
+        ];
+
+        // Text content for each audio
+        const audioTexts = [
+            'The oldest instrumental recording of the Korean national anthem, recorded in 1958, 5 years after the Korean War ended.',
+            'Snippet from Korean Gramophone Record, year unknown, rumored to have been mastered in the USSR and pressed on Soviet produced equipment as the factory that produced the record was on the outskirts of Pyongyang.',
+            'Another snippet from the same record of Korean Gramophone Record, year unknown.',
+            'Recording used to teach the Korean language to children under  Japanese colonial rule, when the Japanese government outlawed the teaching of the Korean language.',
+            'Another snippet from recording used to teach the Korean language to children under  Japanese colonial rule. You can hear children copying the narrator/teacher.',
+            'Popular song from 1990 Korea by singer Suji Kang.',
+            'Audio 7 text - Replace this with your content',
+            'Audio 8 text - Replace this with your content',
+            'Audio 9 text - Replace this with your content'
+        ];
+
+        const audioTextsKorean = [
+            '한국 국가의 가장 오래된 기악 녹음으로, 한국 전쟁이 끝난 지 5년 후인 1958년에 녹음되었습니다.',
+            '한국 축음기 레코드의 일부로, 연도는 알 수 없지만 평양 외곽에 위치한 공장에서 소련산 장비로 제작되었으며 소련에서 마스터링되었다는 소문이 있습니다.',
+            '같은 한국 축음기 레코드의 또 다른 일부, 연도는 알 수 없습니다.',
+            '일본 식민 통치 시기에 한국어 교육이 금지되었을 때, 어린이들에게 한국어를 가르치기 위해 사용된 녹음입니다.',
+            '일본 식민 통치 시기에 한국어를 가르치기 위해 사용된 녹음입니다. 어린이들이 해설자/선생님을 따라하는 소리를 들을 수 있습니다.',
+            '1990년 한국의 인기 가수 강수지의 노래입니다.',
+            'Audio 7 Korean text - Replace this with your content',
+            'Audio 8 Korean text - Replace this with your content',
+            'Audio 9 Korean text - Replace this with your content'
+        ];
+
+        const audioTextDisplay = document.getElementById('audioText');
+        let currentAudioTextIndex = -1;
+
+        // Add hover event listeners for translation
+        audioTextDisplay.addEventListener('mouseenter', () => {
+            if (currentAudioTextIndex >= 0) {
+                audioTextDisplay.textContent = audioTextsKorean[currentAudioTextIndex];
+            }
+        });
+
+        audioTextDisplay.addEventListener('mouseleave', () => {
+            if (currentAudioTextIndex >= 0) {
+                audioTextDisplay.textContent = audioTexts[currentAudioTextIndex];
+            }
+        });
+
+        // Circle class
+        class Circle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 0;
+                this.maxRadius = Math.max(canvas.width, canvas.height);
+                this.speed = 1.4;
+                this.opacity = 1;
+            }
+
+            draw() {
+                ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            update() {
+                this.radius += this.speed;
+                this.opacity = 1 - (this.radius / this.maxRadius);
+                
+                if (this.radius < this.maxRadius) {
+                    this.draw();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            circles = circles.filter(circle => circle.update());
+            
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Handle canvas click
+        canvas.addEventListener('click', (e) => {
+            // Hide instruction on first click
+            if (!hasClicked) {
+                hasClicked = true;
+                document.getElementById('clickInstruction').classList.add('hidden');
+            }
+
+            // Create new circle at click position
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            circles.push(new Circle(x, y));
+
+            // Fade out current audio if playing
+            if (currentAudio) {
+                const fadeAudio = currentAudio;
+                const fadeInterval = setInterval(() => {
+                    if (fadeAudio.volume > 0.05) {
+                        fadeAudio.volume = Math.max(0, fadeAudio.volume - 0.1);
+                    } else {
+                        fadeAudio.pause();
+                        fadeAudio.volume = 0.245;
+                        clearInterval(fadeInterval);
+                    }
+                }, 50);
+            }
+
+            // Play audio file (cycle through first 6 only)
+            const audio = audioElements[audioIndex];
+            if (audio) {
+                audio.volume = 0.245;
+                audio.currentTime = (audioIndex === 0 || audioIndex === 2) ? 1.5 : 0;
+                audio.play().catch(err => console.log('Audio not loaded yet:', err));
+                currentAudio = audio;
+                
+                // Remove any previous ended listener
+                audio.onended = null;
+                
+                // Hide text when audio ends
+                audio.onended = () => {
+                    audioTextDisplay.classList.remove('visible');
+                    currentAudioTextIndex = -1;
+                };
+            }
+            
+            // Display corresponding text
+            currentAudioTextIndex = audioIndex;
+            audioTextDisplay.textContent = audioTexts[audioIndex];
+            audioTextDisplay.classList.add('visible');
+            
+            audioIndex = (audioIndex + 1) % 6;
+        });
+
+        // Toggle manual panel
+        function toggleManual() {
+            const panel = document.getElementById('manualPanel');
+            const manualBtn = document.querySelector('.manual');
+            panel.classList.toggle('active');
+            manualBtn.classList.toggle('active');
+        }
+
+        // Go home
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

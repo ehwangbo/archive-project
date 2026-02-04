@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>silk pouch 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: none;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .title {
+            position: fixed;
+            top: 1.5vh;
+            left: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: left;
+            z-index: 100;
+            color: #ffffff;
+            cursor: none;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .title:hover {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .manual {
+            position: fixed;
+            top: 1.5vh;
+            right: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: right;
+            z-index: 100;
+            color: #ffffff;
+            cursor: none;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .manual.active {
+            color: #000;
+            font-weight: 600;
+        }
+
+        .manual-panel {
+            position: fixed;
+            top: 0;
+            right: -30vw;
+            width: 30vw;
+            height: 100vh;
+            background-color: #f5f0eb;
+            color: #000;
+            z-index: 99;
+            transition: right 0.4s ease;
+            padding: 5vh 3vw;
+            overflow-y: auto;
+            pointer-events: none;
+        }
+
+        .manual-panel.active {
+            right: 0;
+            pointer-events: auto;
+        }
+
+        .manual-content {
+            font-size: clamp(9px, 0.98vw, 13px);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .manual-content p {
+            margin-bottom: 2vh;
+        }
+
+        /* Light table effect */
+        .light-table {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+        }
+
+        .photo-container {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .photo {
+            position: absolute;
+            max-width: 28vw;
+            max-height: 40vh;
+            width: auto;
+            height: auto;
+            opacity: 0;
+            filter: grayscale(20%) sepia(15%) contrast(1.05);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            cursor: none;
+            pointer-events: none;
+            transform: scale(0.95);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .photo:active {
+            cursor: none;
+        }
+
+        .photo:hover {
+            transform: scale(1);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        /* Photo counter - now in cursor */
+        .photo-counter {
+            display: none;
+        }
+
+        /* Custom cursor with counter */
+        .custom-cursor {
+            position: fixed;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 500;
+            color: #000;
+            transform: translate(-50%, -50%);
+            transition: background 0.2s ease;
+        }
+
+        /* Click hint */
+        .click-hint {
+            position: fixed;
+            bottom: 10vh;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            color: #ffffff;
+            z-index: 50;
+            text-align: center;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInHint 2s ease 1s forwards, pulseHint 2s ease-in-out 3s infinite;
+            pointer-events: none;
+        }
+
+        .click-hint.hidden {
+            animation: fadeOutHint 0.8s ease forwards;
+        }
+
+        @keyframes fadeInHint {
+            from { opacity: 0; }
+            to { opacity: 0.6; }
+        }
+
+        @keyframes fadeOutHint {
+            from { opacity: 0.6; }
+            to { opacity: 0; }
+        }
+
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Subtitle */
+        .subtitle {
+            position: fixed;
+            bottom: 5vh;
+            left: 5vw;
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            color: #ffffff;
+            max-width: 200px;
+            line-height: 1.6;
+            cursor: none;
+            transition: opacity 0.2s;
+            z-index: 150;
+        }
+
+        .subtitle:hover {
+            opacity: 0.8;
+        }
+
+        .description-text {
+            position: fixed;
+            bottom: 14vh;
+            left: 5vw;
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            color: #ffffff;
+            max-width: 280px;
+            line-height: 1.8;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 150;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 1), 0 0 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .description-text.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="title" onclick="goHome()">grandma's box<br />할머니의 상자</div>
+    <div class="manual" onclick="toggleManual()">manual<br />설명서</div>
+
+    <div class="manual-panel" id="manualPanel">
+        <div class="manual-content">
+            <p>dear grandchild,<br />be gentle with these trinkets</p>
+            <p>there was war but there was beauty,<br />i'm sure of that.</p>
+            <p>it's been a long time since anyone has<br />seen these. i've lived a long life.</p>
+            <p>there is not much that i can say,<br />so much hardship, joy, erasure, rewriting.<br />i wanted to explain more to you but<br />the words wouldn't come.</p>
+            <p>it's hard, you know?<br />to be honest with you, my grandchild,<br />i must first be honest with myself.</p>
+            <p>sometimes it is easier to<br />show than to tell.</p>
+            <p>there's 5 items for you;<br />video capsule<br />video capsule<br />picture capsule<br />audio capsule<br />picture capsule</p>
+            <p>click whenever you are curious</p>
+        </div>
+    </div>
+
+    <div class="light-table" id="lightTable">
+        <div class="photo-container" id="photoContainer"></div>
+    </div>
+
+    <div class="click-hint" id="clickHint">click to view next<br />다음 보기</div>
+    <div class="photo-counter" id="photoCounter">0 / 16</div>
+    <div class="custom-cursor" id="customCursor">0/16</div>
+
+    <div class="subtitle" onclick="toggleDescription()">grandma, what's this about?<br />할머니, 이건 뭐에요?</div>
+
+    <div class="description-text" id="descriptionText">
+        these are glimpses of seoul during the korean empire, between 1900 and 1910. a world frozen in time, before everything changed. look closely, my dear.
+    </div>
+
+    <script>
+        // Array of photo paths
+        const photos = [
+            'images/silk-pouch-photos/silk-pouch-1.png',
+            'images/silk-pouch-photos/silk-pouch-2.png',
+            'images/silk-pouch-photos/silk-pouch-3.jpg',
+            'images/silk-pouch-photos/silk-pouch-4.jpg',
+            'images/silk-pouch-photos/silk-pouch-5.png',
+            'images/silk-pouch-photos/silk-pouch-6.png',
+            'images/silk-pouch-photos/silk-pouch-7.jpg',
+            'images/silk-pouch-photos/silk-pouch-8.jpg',
+            'images/silk-pouch-photos/silk-pouch-9.jpg',
+            'images/silk-pouch-photos/silk-pouch-10.jpg',
+            'images/silk-pouch-photos/silk-pouch-11.jpg',
+            'images/silk-pouch-photos/silk-pouch-12.png',
+            'images/silk-pouch-photos/silk-pouch-13.jpg',
+            'images/silk-pouch-photos/silk-pouch-14.jpg',
+            'images/silk-pouch-photos/silk-pouch-15.png',
+            'images/silk-pouch-photos/silk-pouch-16.jpg'
+        ];
+
+        let currentIndex = 0;
+        let hasClicked = false;
+        const photoContainer = document.getElementById('photoContainer');
+        const photoCounter = document.getElementById('photoCounter');
+        const clickHint = document.getElementById('clickHint');
+        const customCursor = document.getElementById('customCursor');
+        let clickX = 0;
+        let clickY = 0;
+        let currentZIndex = 100;
+
+        // Update custom cursor position
+        document.addEventListener('mousemove', (e) => {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        });
+
+        // Create photo elements
+        photos.forEach((photoSrc, index) => {
+            const img = document.createElement('img');
+            img.src = photoSrc;
+            img.className = 'photo';
+            img.dataset.index = index;
+            
+            // Position at center initially (will be moved to click position when shown)
+            img.style.left = '50%';
+            img.style.top = '50%';
+            img.style.transform = 'translate(-50%, -50%) scale(0.95)';
+            
+            img.onload = function() {
+                console.log('Loaded:', photoSrc);
+            };
+            img.onerror = function() {
+                console.error('Failed to load:', photoSrc);
+            };
+
+            // Click on photo to bring to front
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                img.style.zIndex = currentZIndex++;
+            });
+            
+            photoContainer.appendChild(img);
+        });
+
+        const photoElements = document.querySelectorAll('.photo');
+        console.log('Total photos:', photoElements.length);
+
+        // Update counter in cursor
+        function updateCounter() {
+            customCursor.textContent = `${currentIndex}/${photos.length}`;
+        }
+
+        // Show next photo at click position
+        function showNextPhoto() {
+            if (!hasClicked) {
+                hasClicked = true;
+                clickHint.classList.add('hidden');
+            }
+
+            if (currentIndex < photos.length) {
+                const photo = photoElements[currentIndex];
+                
+                // Position at click location
+                const x = (clickX / window.innerWidth) * 100;
+                const y = (clickY / window.innerHeight) * 100;
+                photo.style.left = x + '%';
+                photo.style.top = y + '%';
+                photo.style.transform = 'translate(-50%, -50%) scale(0.95)';
+                
+                // Set z-index so newest photo is on top
+                photo.style.zIndex = currentZIndex++;
+                
+                photo.classList.add('active');
+                currentIndex++;
+                updateCounter();
+            }
+        }
+
+        // Click anywhere on light table to add next photo
+        document.getElementById('lightTable').addEventListener('click', (e) => {
+            // Don't trigger if clicking on a photo
+            if (e.target.classList.contains('photo')) {
+                return;
+            }
+
+            // Store click position
+            clickX = e.clientX;
+            clickY = e.clientY;
+
+            showNextPhoto();
+        });
+
+        // Toggle manual panel
+        function toggleManual() {
+            const panel = document.getElementById('manualPanel');
+            const manualBtn = document.querySelector('.manual');
+            panel.classList.toggle('active');
+            manualBtn.classList.toggle('active');
+        }
+
+        // Go home
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Toggle description
+        function toggleDescription() {
+            const descriptionText = document.getElementById('descriptionText');
+            descriptionText.classList.toggle('active');
+        }
+
+        // Play click sound on any click
+        document.addEventListener('click', function(e) {
+            // Don't play sound if clicking on light table or on a photo
+            if (e.target.closest('#lightTable') || e.target.classList.contains('photo')) {
+                return;
+            }
+            const clickSound = document.getElementById('clickSound');
+            clickSound.volume = 0.3;
+            clickSound.currentTime = 0;
+            clickSound.play();
+        });
+    </script>
+</body>
+</html>

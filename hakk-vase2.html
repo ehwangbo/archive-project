@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hakk vase 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOutBlack {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .black-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            z-index: 10001;
+            pointer-events: none;
+            animation: fadeOutBlack 1.5s ease forwards;
+        }
+
+        /* Hover cursor for clickable elements */
+        .title,
+        .manual,
+        .video-stack,
+        .control-button,
+        .mute-control {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+        }
+
+        .title {
+            position: fixed;
+            top: 1.5vh;
+            left: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: left;
+            z-index: 100;
+            color: #fff;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .title:hover {
+            font-weight: 600;
+        }
+
+        .manual {
+            position: fixed;
+            top: 1.5vh;
+            right: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: right;
+            z-index: 100;
+            color: #fff;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .manual.active {
+            color: rgb(0, 0, 0);
+            font-weight: 600;
+        }
+
+        .manual-panel {
+            position: fixed;
+            top: 0;
+            right: -30vw;
+            width: 30vw;
+            height: 100vh;
+            background-color: #fff;
+            color: #000;
+            z-index: 99;
+            transition: right 0.4s ease;
+            padding: 5vh 3vw;
+            overflow-y: auto;
+            pointer-events: none;
+        }
+
+        .manual-panel.active {
+            right: 0;
+            pointer-events: auto;
+        }
+
+        .manual-content {
+            font-size: clamp(9px, 0.98vw, 13px);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .manual-content p {
+            margin-bottom: 2vh;
+        }
+
+        /* Shuffle animation - slide out to left */
+        @keyframes shuffleOut {
+            0% { 
+                transform: rotate(-3deg) translateX(-15px) translateY(-10px);
+                opacity: 1;
+            }
+            50% {
+                transform: rotate(-5deg) translateX(-200px) translateY(-10px);
+                opacity: 0.5;
+            }
+            100% { 
+                transform: rotate(-5deg) translateX(-200px) translateY(-10px);
+                opacity: 0;
+            }
+        }
+
+        .video-stack.shuffle-out {
+            animation: shuffleOut 0.8s ease-in forwards;
+        }
+
+        /* Stacked videos container */
+        .videos-container {
+            position: relative;
+            width: 51vw;
+            height: 59.5vh;
+            perspective: 1000px;
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.15);
+        }
+
+        .video-stack {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            top: 50%;
+            right: calc((100vw - 51vw) / 2 - 8vw);
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            color: #fff;
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            text-align: right;
+        }
+
+        .control-button {
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            line-height: 1.4;
+        }
+
+        .control-button:hover {
+            opacity: 1;
+        }
+
+        /* Mute button on bottom right */
+        .mute-control {
+            position: fixed;
+            bottom: 5vh;
+            right: 5vw;
+            color: #fff;
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            text-align: right;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            line-height: 1.4;
+        }
+
+        .mute-control:hover {
+            opacity: 1;
+        }
+
+        /* Subtitle text */
+        .subtitle {
+            position: fixed;
+            bottom: 5vh;
+            left: 5vw;
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            color: #666;
+            max-width: 200px;
+            line-height: 1.6;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            transition: opacity 0.2s;
+        }
+
+        .subtitle:hover {
+            opacity: 0.8;
+        }
+
+        .description-text {
+            position: fixed;
+            bottom: 14vh;
+            left: 5vw;
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 300;
+            color: #fff;
+            max-width: 200px;
+            line-height: 1.8;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .description-text.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="title" onclick="goHome()">grandma's box<br />할머니의 상자</div>
+    <div class="manual" onclick="toggleManual()">manual<br />설명서</div>
+
+    <div class="manual-panel" id="manualPanel">
+      <div class="manual-content">
+        <p>dear grandchild,<br />be gentle with these trinkets</p>
+
+        <p>there was war but there was beauty,<br />i'm sure of that.</p>
+
+        <p>
+          it's been a long time since anyone has<br />seen these. i've lived a
+          long life.
+        </p>
+
+        <p>
+          there is not much that i can say,<br />so much hardship, joy, erasure,
+          rewriting.<br />i wanted to explain more to you but<br />the words
+          wouldn't come.
+        </p>
+
+        <p>
+          it's hard, you know?<br />to be honest with you, my grandchild,<br />i
+          must first be honest with myself.
+        </p>
+
+        <p>sometimes it is easier to<br />show than to tell.</p>
+
+        <p>
+          there's 4 items for you;<br />video capsule<br />video capsule<br />picture
+          capsule<br />audio capsule
+        </p>
+
+        <p>click whenever you are curious</p>
+      </div>
+    </div>
+
+    <div class="videos-container" id="videosContainer">
+        <div class="video-stack" onclick="playVideo(0)">
+            <video src="hakk-vase-videos/video0.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(1)">
+            <video src="hakk-vase-videos/video1.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(2)">
+            <video src="hakk-vase-videos/video2.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(3)">
+            <video src="hakk-vase-videos/video3.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(4)">
+            <video src="hakk-vase-videos/video4.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(5)">
+            <video src="hakk-vase-videos/video5.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(6)">
+            <video src="hakk-vase-videos/video6.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(7)">
+            <video src="hakk-vase-videos/video7.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(8)">
+            <video src="hakk-vase-videos/video8.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(9)">
+            <video src="hakk-vase-videos/video9.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(10)">
+            <video src="hakk-vase-videos/video10.mp4" preload="auto"></video>
+        </div>
+        <div class="video-stack" onclick="playVideo(11)">
+            <video src="hakk-vase-videos/video11.mp4" preload="auto"></video>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="control-button" id="playPauseBtn" onclick="togglePlay()">play<br />가자</div>
+        <div class="control-button" onclick="nextVideo()">next<br />다음</div>
+        <div class="control-button" onclick="goBack()">back<br />뒤로</div>
+    </div>
+
+    <div class="mute-control" id="muteBtn" onclick="toggleMute()">mute<br />무음</div>
+
+    <div class="subtitle" onclick="toggleDescription()">grandma, what's this about?<br />할머니, 이건 뭐에요?</div>
+
+    <div class="description-text" id="descriptionText">
+        my dear grandchild, these are a collection of videos from two very different periods in korea. the black and white, mute videos are from the 1901-1913, and the colored videos are from the 1970s. both vibrant and beautiful in their own way. quite different to korea now, aren't they? how i miss these times.
+    </div>
+
+    <div class="black-overlay"></div>
+
+    <script>
+        let videoOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        let isShuffling = false;
+
+        // Initialize video positions on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const stacks = document.querySelectorAll('.video-stack');
+            const zIndexes = Array.from({length: 12}, (_, i) => 12 - i);
+            const rotations = [-3, 2, -2, 3, -1, 2.5, -2.5, 1.5, -1.5, 2, -2.2, 3];
+            const translateX = [-15, 10, -8, 12, -5, 8, -10, 6, -12, 9, -7, 11];
+            const translateY = [-10, 5, 15, -5, 10, -8, 12, -6, 8, -10, 14, -3];
+            
+            // Set fixed transforms for each video (based on video index, not position)
+            stacks.forEach((stack, videoIndex) => {
+                stack.style.transform = `rotate(${rotations[videoIndex]}deg) translateX(${translateX[videoIndex]}px) translateY(${translateY[videoIndex]}px)`;
+            });
+            
+            // Set initial z-indexes based on videoOrder
+            videoOrder.forEach((videoIndex, positionIndex) => {
+                stacks[videoIndex].style.zIndex = zIndexes[positionIndex];
+            });
+        });
+
+        // Toggle manual panel function
+        function toggleManual() {
+            const panel = document.getElementById('manualPanel');
+            const manualBtn = document.querySelector('.manual');
+
+            panel.classList.toggle('active');
+            manualBtn.classList.toggle('active');
+        }
+
+        // Go home function
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Play video function
+        function playVideo(videoNum) {
+            const videos = document.querySelectorAll('.video-stack video');
+            videos.forEach((video, index) => {
+                if (index === videoNum) {
+                    video.muted = false;
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            });
+        }
+
+        // Toggle play/pause for front video
+        function togglePlay() {
+            const videos = document.querySelectorAll('.video-stack video');
+            const frontVideo = videos[videoOrder[0]];
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            
+            if (frontVideo.paused) {
+                frontVideo.play();
+                playPauseBtn.innerHTML = 'pause<br />쉬자';
+            } else {
+                frontVideo.pause();
+                playPauseBtn.innerHTML = 'play<br />가자';
+            }
+        }
+
+        // Go back to previous video or home
+        function goBack() {
+            if (videoOrder[0] === 0) {
+                // If on first video, go to index.html
+                window.location.href = 'index.html';
+            } else {
+                // Go to previous video
+                if (isShuffling) return;
+                
+                isShuffling = true;
+                const stacks = document.querySelectorAll('.video-stack');
+                
+                // Move last video to front
+                videoOrder.unshift(videoOrder.pop());
+                
+                // Update z-indexes based on new videoOrder (transforms stay fixed)
+                const zIndexes = Array.from({length: 12}, (_, i) => 12 - i);
+                videoOrder.forEach((videoIndex, positionIndex) => {
+                    stacks[videoIndex].style.zIndex = zIndexes[positionIndex];
+                });
+                
+                // Play the new front video
+                const videos = document.querySelectorAll('.video-stack video');
+                videos.forEach(video => video.pause());
+                videos[videoOrder[0]].muted = false;
+                videos[videoOrder[0]].play();
+                
+                // Update play/pause button
+                const playPauseBtn = document.getElementById('playPauseBtn');
+                playPauseBtn.innerHTML = 'pause<br />쉬자';
+                
+                isShuffling = false;
+            }
+        }
+
+        // Next video with shuffle animation
+        function nextVideo() {
+            if (isShuffling) return;
+            
+            isShuffling = true;
+            const stacks = document.querySelectorAll('.video-stack');
+            const frontStack = stacks[videoOrder[0]];
+            
+            // Add shuffle-out animation to front video (slides left)
+            frontStack.classList.add('shuffle-out');
+            
+            setTimeout(() => {
+                // Rotate the order - move first video to end
+                videoOrder.push(videoOrder.shift());
+                
+                // Remove animation
+                frontStack.classList.remove('shuffle-out');
+                
+                // Update z-indexes based on new videoOrder (transforms stay fixed)
+                const zIndexes = Array.from({length: 12}, (_, i) => 12 - i);
+                videoOrder.forEach((videoIndex, positionIndex) => {
+                    stacks[videoIndex].style.zIndex = zIndexes[positionIndex];
+                });
+                
+                // Play the new front video
+                const videos = document.querySelectorAll('.video-stack video');
+                videos.forEach(video => video.pause());
+                videos[videoOrder[0]].muted = false;
+                videos[videoOrder[0]].play();
+                
+                // Update play/pause button
+                const playPauseBtn = document.getElementById('playPauseBtn');
+                playPauseBtn.innerHTML = 'pause<br />쉬자';
+                
+                isShuffling = false;
+            }, 800);
+        }
+
+        // Toggle mute for all videos
+        function toggleMute() {
+            const videos = document.querySelectorAll('.video-stack video');
+            const muteBtn = document.getElementById('muteBtn');
+            const firstVideo = videos[0];
+            
+            if (firstVideo.muted) {
+                videos.forEach(video => {
+                    video.muted = false;
+                });
+                muteBtn.innerHTML = 'mute<br />무음';
+            } else {
+                videos.forEach(video => {
+                    video.muted = true;
+                });
+                muteBtn.innerHTML = 'unmute<br />소음';
+            }
+        }
+
+        // Toggle description text
+        function toggleDescription() {
+            const descriptionText = document.getElementById('descriptionText');
+            descriptionText.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

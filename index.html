@@ -1,113 +1,272 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>grandma's trinkets</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="halmoni-fivicon.png" type="image/png">
-
-</head>
-<body>
-    <div class="manual" onclick="toggleManual()">
-        manual<br>설명서
-    </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jacques+Francois+Shadow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="images/halmoni-fivicon.png" type="image/png" />
+  </head>
+  <body>
+    <div class="manual" onclick="toggleManual()">manual<br />설명서</div>
 
     <!-- will change this later -->
-    
+
     <div class="manual-panel" id="manualPanel">
-        <div class="manual-content">
-            <p>dear grandchild,<br>be gentle with these trinkets</p>
-            
-            <p>there was war but there was beauty,<br>i'm sure of that.</p>
-            
-            <p>it's been a long time since anyone has<br>seen these. i've lived a long life.</p>
-            
-            <p>there is not much that i can say,<br>so much hardship, joy, erasure, rewriting.<br>i wanted to explain more to you but<br>the words wouldn't come.</p>
-            
-            <p>it's hard, you know?<br>to be honest with you, my grandchild,<br>i must first be honest with myself.</p>
-            
-            <p>sometimes it is easier to<br>show than to tell.</p>
-            
-            <p>there's 4 items for you;<br>video capsule<br>video capsule<br>picture capsule<br>audio capsule</p>
-            
-            <p>click whenever you are curious</p>
-        </div>
+      <div class="manual-content">
+        <p>dear grandchild,<br />be gentle with these trinkets</p>
+
+        <p>there was war but there was beauty,<br />i'm sure of that.</p>
+
+        <p>
+          it's been a long time since anyone has<br />seen these. i've lived a
+          long life.
+        </p>
+
+        <p>
+          there is not much that i can say,<br />so much hardship, joy, erasure,
+          rewriting.<br />i wanted to explain more to you but<br />the words
+          wouldn't come.
+        </p>
+
+        <p>
+          it's hard, you know?<br />to be honest with you, my grandchild,<br />i
+          must first be honest with myself.
+        </p>
+
+        <p>sometimes it is easier to<br />show than to tell.</p>
+
+        <p>
+          there's 5 items for you;<br />video capsule<br />video capsule<br />picture
+          capsule<br />audio capsule<br />picture capsule
+        </p>
+
+        <p>click whenever you are curious</p>
+      </div>
     </div>
-    
+
     <div class="container">
-        <header class="intro-text">
-            <p>digging through your grandma's house cabinet, you find<br>
-            6 items sitting in the dust. grandma never told you about the war,<br>
-            her childhood. most traces of history were destroyed. but oh what<br>
-            a contrast it is to breathe in the still air and uncover these treasures<br>
-            in a city full of bustling cars and billboards.</p>
-            <p>you sit, and peruse a while.</p>
-            <p>help yourself to your grandma's trinkets.</p>
-        </header>
+      <header class="intro-text">
+        <p data-en="digging through your grandma's house cabinet, you find<br />5 items sitting in the dust. grandma never told you about the war,<br />her childhood. most traces of history were destroyed. but oh what<br />a contrast it is to breathe in the still air and uncover these treasures<br />in a city full of bustling cars and billboards." data-kr="할머니 집 찬장을 뒤지다가 찾은 5가지 물건...<br />먼지 속에 앉아 있는 이 물건들은 할머니는 전쟁에 대해,<br />어린 시절에 대한 속삭임이네요. 한국의 대부분의 역사 흔적은 파괴되었기에<br />자동차와 광고판으로 가득한 도시에서 고요한 공기를 마시며<br />이 보물들을 발견하는 것은 더 더욱 특별한것같네요">
+          digging through your grandma's house cabinet, you find<br />
+          5 items sitting in the dust. grandma never told you about the war,<br />
+          her childhood. most traces of history were destroyed. but oh what<br />
+          a contrast it is to breathe in the still air and uncover these
+          treasures<br />
+          in a city full of bustling cars and billboards.
+        </p>
+        <p data-en="you sit, and peruse a while." data-kr="앉아서 잠시 살펴봅니다.">you sit, and peruse a while.</p>
+        <p data-en="help yourself to your grandma's trinkets." data-kr="할머니의 소품을 마음껏 구경하세요.">help yourself to your grandma's trinkets.</p>
+      </header>
 
-        <main class="content-wrapper">
-            <div class="text-column">
-                <div class="artifact-text">
-                    <h3>jewelry box</h3>
-                    <p class="date">{1890 - 1949}</p>
-                    <p class="description">photos of and around seoul,<br>from 1890 to 1949</p>
-                </div>
+      <main class="content-wrapper">
+        <div class="text-column">
+          <div class="artifact-text" data-en-title="hakk vase" data-kr-title="학 꽃병" data-en-desc="videos with color, of the 1970s" data-kr-desc="1970년대의 컬러 비디오">
+            <h3>hakk vase</h3>
+            <p class="date">1970s</p>
+            <p class="description">videos with color, of the 1970s</p>
+          </div>
 
-                <div class="artifact-text">
-                    <h3>moon vase</h3>
-                    <p class="date">{1901 - 1913}</p>
-                    <p class="description">life, videos from 1901-1913</p>
-                </div>
+          <div class="artifact-text" data-en-title="jewelry box" data-kr-title="보석함" data-en-desc="photos of and around seoul,<br />from 1890 to 1949" data-kr-desc="1890년부터 1949년까지<br />서울과 그 주변의 사진들">
+            <h3>jewelry box</h3>
+            <p class="date">1890 - 1949</p>
+            <p class="description">
+              photos of and around seoul,<br />from 1890 to 1949
+            </p>
+          </div>
 
-                <div class="artifact-text">
-                    <h3>silla golden earrings</h3>
-                    <p class="date">{19??}</p>
-                    <p class="description">hear sounds of teaching korean<br>language and the first of joseon music</p>
-                </div>
+          <div class="artifact-text" data-en-title="record player" data-kr-title="축음기" data-en-desc="hear sounds of teaching korean<br />language and the first of joseon music" data-kr-desc="한국어 교육 소리와<br />조선 음악의 첫 소리를 들어보세요">
+            <h3>record player</h3>
+            <p class="date">1960s</p>
+            <p class="description">
+              hear sounds of teaching korean<br />language and the first of
+              joseon music
+            </p>
+          </div>
 
-                <div class="artifact-text">
-                    <h3>hakk vase</h3>
-                    <p class="date">{1970s}</p>
-                    <p class="description">videos with color, of the 1970s</p>
-                </div>
-            </div>
+          <div class="artifact-text" data-en-title="moon vase" data-kr-title="달 항아리" data-en-desc="life, videos from 1901-1913" data-kr-desc="1901-1913년의 삶의 비디오">
+            <h3>moon vase</h3>
+            <p class="date">1901 - 1913</p>
+            <p class="description">life, videos from 1901-1913</p>
+          </div>
+
+          <div class="artifact-text" data-en-title="silk pouch" data-kr-title="비단 주머니" data-en-desc="black and white images<br />from the early 1900s" data-kr-desc="1900년대 초반의<br />흑백 이미지">
+            <h3>silk pouch</h3>
+            <p class="date">1900 - 1910s</p>
+            <p class="description">
+              black and white images<br />from the early 1900s
+            </p>
+          </div>
+        </div>
 
         <div class="images-column">
-                <div class="artifact-item" data-index="3">
-                    <span class="artifact-label">{hakk-vase}</span>
-                    <a href="hakk-vase1.html
-                    "><img src="hakk-vase.png" alt="hakk vase"></a>
-                </div>
-                
-                <div class="artifact-item" data-index="0">
-                    <span class="artifact-label">{jewelry-box}</span>
-                    <img src="jewelry-box.png" alt="jewelry box">
-                </div>
+          <div class="artifact-item" data-index="0">
+            <span class="artifact-label" data-en="hakk-vase" data-kr="학 꽃병">hakk-vase</span>
+            <a href="hakk-vase1.html"
+              ><img src="images/hakk-vase.png" alt="hakk vase"
+            /></a>
+          </div>
 
-                <div class="artifact-item" data-index="2">
-                    <span class="artifact-label">{silla-earrings}</span>
-                    <img src="silla-earrings.png" alt="silla golden earrings">
-                </div>
+          <div class="artifact-item" data-index="1">
+            <span class="artifact-label" data-en="jewelry-box" data-kr="보석함">jewelry-box</span>
+            <a href="jewelry-box1.html"
+              ><img src="images/jewelry-box.png" alt="jewelry box"
+            /></a>
+          </div>
 
-                <div class="artifact-item" data-index="1">
-                    <span class="artifact-label">{moon-vase}</span>
-                    <img src="moon-vase.png" alt="moon vase">
-                </div>
+          <div class="artifact-item" data-index="2">
+            <span class="artifact-label" data-en="record-player" data-kr="축음기">record-player</span>
+            <a href="record-player1.html"
+              ><img src="images/record-player-1.png" alt="record player"
+            /></a>
+          </div>
 
-                
-            </div>
-        </main>
+          <div class="artifact-item" data-index="3" id="moonVase">
+            <span class="artifact-label" data-en="moon-vase" data-kr="달 항아리">moon-vase</span>
+            <img src="images/moon-vase.png" alt="moon vase" />
+          </div>
 
-        <aside class="title-vertical">
-            <h1>grandma's trinkets</h1>
-        </aside>
+          <div class="artifact-item" data-index="4">
+            <span class="artifact-label" data-en="silk-pouch" data-kr="비단 주머니">silk-pouch</span>
+            <a href="silk-pouch1.html"
+              ><img src="images/pouch-1.png" alt="silk pouch"
+            /></a>
+          </div>
+        </div>
+      </main>
 
-        <footer>
-            <p>made by evy hwangbo ©</p>
-        </footer>
+      <aside class="title-vertical">
+        <h1>grandma's trinkets</h1>
+      </aside>
+
+      <footer>
+        <p>made by evy hwangbo ©</p>
+      </footer>
     </div>
 
+    <audio id="clickSound" preload="auto">
+      <source src="audio/click.mp3" type="audio/mpeg">
+    </audio>
+
     <script src="script.js"></script>
-</body>
+    <script>
+      // Play click sound on any click
+      document.addEventListener('click', function() {
+        const clickSound = document.getElementById('clickSound');
+        clickSound.volume = 0.21;
+        clickSound.currentTime = 0;
+        clickSound.play();
+      });
+
+      // Intro text hover translation
+      const introParagraphs = document.querySelectorAll('.intro-text p');
+      introParagraphs.forEach(p => {
+        p.addEventListener('mouseenter', function() {
+          this.innerHTML = this.getAttribute('data-kr');
+        });
+        p.addEventListener('mouseleave', function() {
+          this.innerHTML = this.getAttribute('data-en');
+        });
+      });
+
+      // Moon vase coin animation
+      const moonVase = document.getElementById('moonVase');
+      let isAnimating = false;
+      
+      moonVase.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (isAnimating) return;
+        isAnimating = true;
+        
+        // Start tumbling animation
+        moonVase.classList.add('tumbling');
+        
+        // Remove tumbling class after animation completes (6 seconds)
+        setTimeout(() => {
+          moonVase.classList.remove('tumbling');
+          isAnimating = false;
+        }, 6000);
+        
+        // Release coins after vase rotates to 90 degrees
+        setTimeout(() => {
+          // Calculate position of vase center when rotated 90 degrees
+          // The vase rotates around bottom center, so we need to calculate where the center moves to
+          const vaseRect = moonVase.getBoundingClientRect();
+          const bottomCenterX = vaseRect.left + vaseRect.width / 2;
+          const bottomCenterY = vaseRect.bottom;
+          const vaseHeight = vaseRect.height;
+          
+          // When rotated 90 degrees from bottom center, the center point moves
+          // Original center is vaseHeight/2 above the pivot
+          // After 90 degree rotation, it's vaseHeight/2 to the right of the pivot
+          // Adjusted 70px to the left
+          const startX = bottomCenterX + vaseHeight / 2 - 70;
+          const startY = bottomCenterY - vaseHeight / 2;
+          const coinPaths = [
+            'images/coin-photos/coin-1.png',
+            'images/coin-photos/coin-2.png',
+            'images/coin-photos/coin-3.png',
+            'images/coin-photos/coin-4.png',
+            'images/coin-photos/coin-5.png',
+            'images/coin-photos/coin-6.png'
+          ];
+          
+          // Generate random delays for each coin (not evenly spaced)
+          const coinDelays = coinPaths.map(() => Math.random() * 600 + 100); // 100-700ms random
+          let cumulativeDelay = 0;
+          
+          coinPaths.forEach((coinPath, index) => {
+            cumulativeDelay += coinDelays[index];
+            
+            setTimeout(() => {
+              const coin = document.createElement('img');
+              coin.src = coinPath;
+              coin.className = 'coin';
+              
+              // Start at center of vase with small random offset
+              const randomXOffset = (Math.random() - 0.5) * 20;
+              const randomYOffset = (Math.random() - 0.5) * 20;
+              coin.style.left = (startX + randomXOffset) + 'px';
+              coin.style.top = (startY + randomYOffset) + 'px';
+              
+              document.body.appendChild(coin);
+              
+              // Slower, more random animation
+              const duration = 15 + (Math.random() * 8); // 15-23 seconds
+              const verticalMovement = (Math.random() - 0.5) * 200;
+              const rotation = 720 + (Math.random() * 720); // 2-4 full rotations
+              
+              coin.style.animation = `rollCoin ${duration}s ease-out forwards`;
+              coin.style.setProperty('--vertical-offset', verticalMovement + 'px');
+              
+              // Apply custom transform with random vertical movement
+              let startTime = null;
+              function animateCoin(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = (timestamp - startTime) / (duration * 1000);
+                
+                if (progress < 1) {
+                  const x = progress * 150; // vw
+                  const rotate = progress * rotation;
+                  const y = Math.sin(progress * Math.PI * 2) * (verticalMovement / window.innerHeight * 100);
+                  coin.style.transform = `translateX(${x}vw) translateY(${y}vh) rotate(${rotate}deg)`;
+                  coin.style.opacity = 1 - (progress * 0.3);
+                  requestAnimationFrame(animateCoin);
+                } else {
+                  coin.remove();
+                }
+              }
+              
+              requestAnimationFrame(animateCoin);
+            }, cumulativeDelay);
+          });
+        }, 1000);
+      });
+    </script>
+  </body>
 </html>

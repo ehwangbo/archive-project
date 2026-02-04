@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>record player 1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f5f0eb;
+            cursor: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #imageDisplay {
+            position: absolute;
+            object-fit: contain;
+            transition: all 1.6s ease, filter 0.8s ease;
+        }
+
+        #imageDisplay.size-1 { 
+            width: clamp(213px, 15.3vw, 298px);
+            top: calc(50% - 3vh - clamp(213px, 15.3vw, 298px)/2 - 1vw);
+            right: calc(50% - clamp(213px, 15.3vw, 298px)/2 - 1vw);
+        }
+        #imageDisplay.size-2 { 
+            width: 470px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #imageDisplay.size-3 { 
+            width: 950px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #imageDisplay.blur-transition {
+            filter: blur(20px);
+        }
+
+        #imageDisplay.final-zoom {
+            transform: translate(-50%, -50%) scale(17.5) translateY(-15%) translateX(-10%);
+        }
+
+        .thumbprint {
+            position: fixed;
+            width: 240px;
+            height: 240px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .thumbprint img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        #custom-cursor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            font-size: 16px;
+            color: #333;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
+
+        .title {
+            position: fixed;
+            top: 1.5vh;
+            left: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: left;
+            z-index: 100;
+            color: #2a2a2a;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .title:hover {
+            font-weight: 600;
+        }
+
+        .manual {
+            position: fixed;
+            top: 1.5vh;
+            right: 2vw;
+            font-size: clamp(8px, 0.86vw, 12px);
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: right;
+            z-index: 100;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .manual:active {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"><circle cx="17" cy="17" r="15" fill="%23d4956d" stroke="%23d4956d" stroke-width="1"/></svg>') 17 17, auto;
+        }
+
+        .manual.active {
+            color: white;
+            font-weight: 600;
+        }
+
+        .manual-panel {
+            position: fixed;
+            top: 0;
+            right: -30vw;
+            width: 30vw;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            z-index: 99;
+            transition: right 0.4s ease;
+            padding: 5vh 3vw;
+            overflow-y: auto;
+            pointer-events: none;
+        }
+
+        .manual-panel.active {
+            right: 0;
+            pointer-events: auto;
+        }
+
+        .manual-content {
+            font-size: clamp(9px, 0.98vw, 13px);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .manual-content p {
+            margin-bottom: 2vh;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes fadeToBlack {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .black-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            opacity: 0;
+            z-index: 10001;
+            pointer-events: none;
+        }
+
+        .black-overlay.active {
+            animation: fadeToBlack 1.2s ease forwards;
+        }
+
+        body.fade-out #imageDisplay,
+        body.fade-out .thumbprint {
+            animation: fadeOut 1.2s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="title" onclick="goHome()">grandma's box<br />할머니의 상자</div>
+    <div class="manual" onclick="toggleManual()">manual<br />설명서</div>
+
+    <div class="manual-panel" id="manualPanel">
+        <div class="manual-content">
+            <p>dear grandchild,<br />be gentle with these trinkets</p>
+
+            <p>there was war but there was beauty,<br />i'm sure of that.</p>
+
+            <p>
+                it's been a long time since anyone has<br />seen these. i've lived a
+                long life.
+            </p>
+
+            <p>
+                there is not much that i can say,<br />so much hardship, joy, erasure,
+                rewriting.<br />i wanted to explain more to you but<br />the words
+                wouldn't come.
+            </p>
+
+            <p>
+                it's hard, you know?<br />to be honest with you, my grandchild,<br />i
+                must first be honest with myself.
+            </p>
+
+            <p>sometimes it is easier to<br />show than to tell.</p>
+
+            <p>
+                there's 4 items for you;<br />video capsule<br />video capsule<br />picture
+                capsule<br />audio capsule
+            </p>
+
+            <p>click whenever you are curious</p>
+        </div>
+    </div>
+
+    <img id="imageDisplay">
+    <div id="custom-cursor">open <br> 열어라</div>
+    <div class="black-overlay" id="blackOverlay"></div>
+
+    <script>
+        // Array of images for record player
+        const images = [
+            'images/record-player-1.png',
+            'images/record-player-2.png',
+            'images/record-player-3.png'
+        ];
+        
+        // Track current image index
+        let currentIndex = 0;
+
+        // Get elements
+        const imageDisplay = document.getElementById('imageDisplay');
+        const customCursor = document.getElementById('custom-cursor');
+        
+        // Set initial image
+        imageDisplay.src = images[currentIndex];
+        imageDisplay.className = 'size-' + (currentIndex + 1);
+
+        // Create thumbprint effect
+        function createThumbprint(x, y) {
+            const thumbprint = document.createElement('div');
+            thumbprint.className = 'thumbprint';
+            thumbprint.style.left = x + 'px';
+            thumbprint.style.top = y + 'px';
+            
+            const img = document.createElement('img');
+            img.src = 'images/thumbprint.png';
+            thumbprint.appendChild(img);
+            
+            document.body.appendChild(thumbprint);
+        }
+
+        // Toggle manual panel function
+        function toggleManual() {
+            const panel = document.getElementById('manualPanel');
+            const manualBtn = document.querySelector('.manual');
+
+            panel.classList.toggle('active');
+            manualBtn.classList.toggle('active');
+        }
+
+        // Go home function
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Add click event listener to body
+        document.body.addEventListener('click', function(e) {
+            // Ignore clicks on manual and title buttons
+            if (e.target.closest('.manual') || e.target.closest('.title') || e.target.closest('.manual-panel')) {
+                return;
+            }
+
+            // Create thumbprint
+            createThumbprint(e.clientX, e.clientY);
+            
+            if (currentIndex === 2) {
+                // Last image (index 2 for 3 images), trigger final animation
+                currentIndex = 3;
+                imageDisplay.classList.add('final-zoom');
+                
+                // Fade out and fade to black
+                setTimeout(() => {
+                    document.body.classList.add('fade-out');
+                    document.getElementById('blackOverlay').classList.add('active');
+                }, 400);
+                
+                setTimeout(() => {
+                    window.location.href = 'record-player2.html';
+                }, 1600);
+            } else {
+                // Blur out current image
+                imageDisplay.classList.add('blur-transition');
+                
+                setTimeout(() => {
+                    // Move to next image
+                    currentIndex++;
+                    imageDisplay.src = images[currentIndex];
+                    imageDisplay.className = 'size-' + (currentIndex + 1);
+                    
+                    // Blur in new image
+                    setTimeout(() => {
+                        imageDisplay.classList.remove('blur-transition');
+                    }, 50);
+                }, 400);
+            }
+        });
+
+        // Update custom cursor position
+        document.addEventListener('mousemove', function(e) {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        });
+    </script>
+</body>
+</html>
